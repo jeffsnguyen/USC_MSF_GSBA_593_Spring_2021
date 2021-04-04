@@ -1,5 +1,5 @@
 ---
-title: "Extra Credit Project"
+title: "**Mortgage-Backed Security Modelling**"
 author: "Jeff Nguyen"
 date: "4/04/2021"
 output:
@@ -11,8 +11,7 @@ output:
 ```{r setup, include=FALSE} 
 knitr::opts_chunk$set(warning=FALSE, message=FALSE) 
 ```
-
-**Mortgage-Backed Security Modelling**  
+  
 **University of Southern California**  
 **Marshall School of Business**  
 **GSBA 593 Independent Research**  
@@ -30,6 +29,10 @@ The study will utilize credit data from sources such as the Federal Reserve Econ
 
 
 # Introduction  
+
+<Insert SIFMA chart here>  
+https://www.sifma.org/resources/research/fixed-income-chart/  
+
 The US asset-backed securities market is a 11.2 trillion market as of 2020 (SIFMA). It covers an important consumer credit market of homeowners' loans. A well-functioned mortgage-backed securities market is instrumental in providing liquidity to important credit functions that drives the economy. The subprime crisis of 2008 has eroded trusts of investors in credit agencies’ abilities to accurately priced mortgage-backed securities. Thus, the study seeks to showcase a quantitative and thus, objective, method to price these structured securities.  
 
 The proposed research consists of two integrated parts:  
@@ -47,21 +50,67 @@ The results will then be compared with the actual MBS’s metrics to understand 
 From the credit granting institutions’ perspective, each structured security has two main components: the pool of assets—the underlying receivables from homeowners' loans—and the pool of liabilities—the structured securities.  
 
 ## Hypothetical Case Study
-When Bank of America (BoA) grants credits to consumers, it guarantees the consumer’s purchase of goods and services by making the immediate payments on behalf of the consumers to the vendors and receive periodic repayment from the consumers. BoA gets reimbursement for facilitating these transactions by charging a fee to the consumers as well as collecting interest rates on the credit amount. During the period from which the initial credit grant happens—when the consumers make the purchase—to the repayment of credit—when the consumer make the credit payment—BoA has exposed itself to two types of risks:
-1.	Default risk: The risk that the consumer would not pay back the credit. Defaulted losses range from a percentage of to the full amount of the credit. This is an example of bad debt expense for BoA.
-2.	Prepayment risk: The risk that consumer would pay back the credit earlier than expected. This scenario would result in a loss of expected income from interest payments for BoA.
-To limit its expose to these risks, BoA would package these credits together into a Special Purpose Vehicle. This vehicle is the structured security. The structured security enables a third party, the investors, to assume the majority of the risks—Dodd-Frank regulations require credit lender to assume some of the risks compared to 0% pre-2008—by making payments to the BoA to guarantees these credits and hoping to recoup the principal amount at the end of the credit term as well as earning a premium on periodic interest amounts (Practical Law). This fair premium is what the study seeks to arrive at.
-There are different types of structured securities, such as standard and strips. The scope of this study only covers a two-tranche special purpose vehicle, where each tranche receives both the principal and interest payments from the Special Purpose Vehicle.
-Design and Methodology
-This study’s structure is as follow.
-1.	Implementation of the Structured Securities:
-a.	Aggregation of the pool of credits: Determine the cash flows collections—from consumer’s repayments—for each period based on each credits’ notional, rate and term.
-b.	Implement the default and prepayment likelihood and losses aspect to the pool of credits.
-c.	Setup of the structured securities—two tranches—to receive cash flows from the pooled collections based on a default rate.
-2.	Valuation of the Structured Securities:
-a.	Metrics of the structured securities: From the cash flows of each tranches, study their respective internal rate of return and weighted average life.
-b.	Simulation of default and prepayment scenarios: Run Monte Carlo simulations of default and prepayment scenarios to determine the fair market rate for each tranche as well as its corresponded ratings.
-3.	Comparison to the actual agency’s metrics.
+When Bank of America (BoA) grants credits to consumers, it guarantees the consumer’s purchase of goods and services by making the immediate payments on behalf of the consumers to the vendors and receive periodic repayment from the consumers. BoA gets reimbursement for facilitating these transactions by charging a fee to the consumers as well as collecting interest rates on the credit amount. During the period from which the initial credit grant happens—when the consumers make the purchase—to the repayment of credit—when the consumer make the credit payment—BoA has exposed itself to two types of risks:  
+
+### 1.	Default risk:  
+The risk that the consumer would not pay back the credit. Defaulted losses range from a percentage of to the full amount of the credit. This is an example of bad debt expense for BoA.  
+
+### 2.	Prepayment risk:  
+The risk that consumer would pay back the credit earlier than expected. This scenario would result in a loss of expected income from interest payments for BoA. To limit its expose to these risks, BoA would package these credits together into a Special Purpose Vehicle. This vehicle is the structured security. The structured security enables a third party, the investors, to assume the majority of the risks—Dodd-Frank regulations require credit lender to assume some of the risks compared to 0% pre-2008—by making payments to the BoA to guarantees these credits and hoping to recoup the principal amount at the end of the credit term as well as earning a premium on periodic interest amounts (Practical Law). This fair premium is what the study seeks to arrive at.  
+
+There are different types of structured securities, such as standard and strips. The scope of this study only covers a two-tranche special purpose vehicle, where each tranche receives both the principal and interest payments from the Special Purpose Vehicle.  
+
+# Design and Methodology
+This study’s structure is as follow:  
+
+## 1.	Implementation of the Structured Securities:
+
+### a.	Aggregation of the pool of outstanding credits  
+
+First, we determine the cash flows collections—from consumer’s repayments—for each period based on each credits’ notional, rate and term. In practice, a credit pool only comprises of a single class of loan--mortgage loans in our study--but theoretically, it can contains a mixture.  
+
+Second, we establish a structure of types and number of securities to be offered to potential investors. Each of these security is defined as a tranche. A structured deal, then, consists of a number and combination of tranches. In practice, there are different types of tranches. For example:  
+
+#### Classification by Payment Type:  
+
+##### - Standard Tranches:  
+
+The Standard Tranche receive both interest and principal payments from a pool of loans.  
+
+##### - Interest-Only (IO) Strips:  
+
+Interest-Only Tranches receive solely interest payments from the pool of loans. These type of tranches carry high amount of risk, mainly prepayment risks as once prepayment happens, these tranches receive no further interest payments.  
+
+##### - Principal-Only (PO) Strips:  
+
+Opposite to IO Strips, Principal-Only Tranches receive solely principal payments from the credit pool. These types of tranches carry high amount of default risk, as they do not receive any interest payment to offset it.  
+
+The scope of this study will be contained in modelling standard tranches.  
+
+#### Classification by Risks:  
+
+In addition to classification by payment types, tranches can be classified by type of risks. For example, a structured deal may contains multiple tranches: Class A, Class B, Class C, and so on. The Class B Tranche would be a subordinate of the Class A Tranche. The Class C TRanche would be a subordinate of the Class C one and so on. Subordination denotes the priority of each tranches in terms of receiving principal payments. In this case, Tranche B receives its principal payment after Tranche A. Consequently, Tranche B is exposed to higher default risk. AS a result, investors in Tranche B would expect a higher discount rate to compensate for additional risks.  
+
+### b. Implement Waterfall cash flow model  
+
+Next, payment from the credit pool for each period is calculated and allocated to each tranche in the structure. The principal payment amount is allocated first. For example, if the total loan principal is $100,000,000$, Class A Tranche hypothetically could be allocated 70% or $70,000,000$, class B 20% ($20,000,000$) and class C 10% ($10,000,000$).  
+
+These payments are tracked via our Waterfall cash flow model and each payment is distributed to each tranches based on the structured deal agreement. Interest payments are allocated first and the remaining cash flow is allocated to pay down the principal balance.  
+
+#### Default Model  
+
+For each payment period, a default model--using Monte Carlo Simulation--is incorporated into the Waterfall cash flow model. The default model will pseudorandomly alter cash flow: if there is default, cash payout from credit pool to the tranche will halt. For the purpose of this study, the default model will follow a lognormal distribution with pseudo-randomly generated default parameters.   
+
+### c.	Implement the default and prepayment likelihood and losses aspect to the pool of credits.  
+### d.	Setup of the structured securities—two tranches—to receive cash flows from the pooled collections based on a default rate.  
+
+## 2.	Valuation of the Structured Securities:  
+
+### a.	Metrics of the structured securities: From the cash flows of each tranches, study their respective internal rate of return and weighted average life.  
+
+### b.	Simulation of default and prepayment scenarios: Run Monte Carlo simulations of default and prepayment scenarios to determine the fair market rate for each tranche as well as its corresponded ratings.  
+
+## 3.	Comparison to the actual agency’s metrics.
 
 
 
@@ -69,7 +118,7 @@ b.	Simulation of default and prepayment scenarios: Run Monte Carlo simulations o
 
 
 
-References
+# References
 Practical Law. (n.d.). Retrieved November 25, 2020, from https://ca.practicallaw.thomsonreuters.com/3-502-8950?transitionType=Default 
 Rutledge, Ann, and Sylvain Raynes. Elements of Structured Finance. Oxford University Press. 2010.
 SIFMA. (n.d.). Retrieved November 25, 2020, from https://www.sifma.org/resources/research/fixed-income-chart/ 
