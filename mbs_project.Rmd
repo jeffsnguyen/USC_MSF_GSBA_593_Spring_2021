@@ -232,6 +232,52 @@ This metrics is evaluated by subtracting the annual IRR from the tranche rate, w
 
 ## Simulation for Structured Deal Valuation  
   
+The simulation engine of this model seeks to model in the expected loss amount due to default which is one of the primary risks of a mortgage-backed security. In practice, losses can also be incurred from early prepayment, which this model will naively ignore for simplicity purposes.  
+
+To do so, two Monte Carlo simulations are executed:  
+
+**Inner Simulation**  
+This simulation will model thousands of default scenarios and arrive at the average metrics of reduction in yield and weighted average life across all of these scenarios.  
+
+**Outer simulation**  
+This simulation will utilize results from the inner simulation to estimate the yield for the structured security based on the below yield curve:  
+
+\begin{equation}
+  \begin{split}
+    r(0,t) =& \frac{\frac{7}{1 + .08 e^{-.19\frac{a}{12}}} + .019 \sqrt{100 d \frac{a}{12}}}{100}  \\
+    \text{where}  \\
+    a =& \quad \text{Weighted Average Life}  \\
+    d =& \quad \text{Reduction in Yield}   \\
+  \end{split}
+\end{equation}
+  
+After the yield has been estimated, new rates for the standard tranches will be recalculate using the following relaxation algorithm:  
+
+\begin{equation}
+  \begin{split}
+    r_{t+1} =& r_t + \alpha (r(0,t) - r_t)  \\
+    \text{where}  \\
+    r_{t+1} =& \quad \text{new tranche rate}  \\
+    r_{t} =& \quad \text{old tranche rate}  \\
+    \alpha =& \quad \text{coefficient for each tranche}  \\
+    r(0,t) =& \quad \text{yield}  \\
+  \end{split}
+\end{equation}
+  
+Next we check for convergence at a predetermined tolerance level--$10^{-12}$ or 12 decimals in this case--of each new rate against the previous rate as follow.  
+
+\begin{equation}
+  \begin{split}
+    \Delta =& \frac{n_A |\frac{r_{A_t} - r_{A_{t+1}}}{r_{A_t}}| + n_B |\frac{r_{B_t} - r_{B_{t+1}}}{r_{B_t}}|}{N}  \\
+    \text{where}  \\
+    n_A =& \quad \text{Tranche A notional}  \\
+    n_B =& \quad \text{Tranche B notional}  \\
+    N =& n_A + n_B  \\
+  \end{split}
+\end{equation}
+
+# Quantitative Model vs. Reality  
+
 
 # Appendix  
 
