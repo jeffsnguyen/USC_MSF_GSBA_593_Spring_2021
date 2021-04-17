@@ -278,6 +278,54 @@ Next we check for convergence at a predetermined tolerance level--$10^{-12}$ or 
 
 # Quantitative Model vs. Reality  
 
+## Summary Statistics
+  
+We examine the following MBS security from Fannie Mae: https://fanniemae.mbs-securities.com/fannie/details/31418DUA8
+
+The summary of the security is as follow:  
+  
+| PREFIX                                 | CT                   |
+|----------------------------------------|----------------------|
+| SECURITY IDENTIFIER                    | MA4176               |
+| CUSIP                                  | 31418DUA8            |
+| INVESTOR SECURITY UNPAID BALANCE       | $\$2,866,571,512.00$ |
+| WEIGHTED AVERAGE NET INTEREST RATE (%) | 2.000                |
+| ISSUE DATE                             | 10/01/2020           |
+| FIRST PAYMENT DATE                     | 11/25/2020           |
+| MATURITY DATE                          | 11/2040              |
+| INTEREST ONLY SECURITY INDICATOR       | NO                   |
+| PREPAYMENT PENALTY INDICATOR           | NO                   |
+| REDUCED MINIMUM SERVICING INDICATOR    | NO                   |
+  
+
+Some of the securities basic statistic can be found in Appendix B. Primarily, we are interested in the tranches of the security.
+
+For simplicity purpose, we will use Quicken Loan's statistics as they are the primary servicer of this security at over 1.19bn in asset under collateral. The primary statistics we are interested in are their tranches' interest rate: $3.125$ and $2.500$.  
+
+## Waterfall Model  
+
+Using the collateral data contains a package of 9945 mortgage loans, we execute our quantitative model to establish the waterfall of cash flows from the collateral over the periods. The result is in Appendix C.  
+
+Examining the waterfall cash flow model results, we can observe that both tranches are fully paid off by period (month) 241, i.e. at the last payment of the collateral is supposedly due. In addition, we have $\$ 657,452,994.262166$ in our reserve account that theoretically would earn compounded interest every period.  
+
+The statistics of each tranche is as follow:  
+  
+
+| Summary Statistics            | Senior Tranche       | Subordinate Tranche  |
+|-------------------------------|----------------------|----------------------|
+| Collateral Allocation (%)     | 50%                  | 50%                  |
+| Collateral Allocation ($)     | $\$1,433,463,500.0$  | $\$1,433,463,500.0$  |
+| Interest Rate                 | 0.025                | 0.03125              |
+| IRR (Internal Rate of Return) | 0.024999999999995914 | 0.008043195932616598 |
+| DIRR (Reduction in Yield)     | 0.0                  | 0.023207             |
+| DIRR (Credit Letter Rating)   | Aaa                  | Aaa                  |
+| Average Life                  | 76.58865751499759    | 106.62224154807349   |
+  
+We observe both tranches have Aaa letter rating, implying excellent investment opportunities.  
+
+## Rate Optimization Model  
+
+Per our methodology, the rate optimization model will be test with 2000 Monte Carlo default scenarios to come up with the optimized rates for each tranche and their respective key metrics  such as IRR, DIRR, Credit Letter Rating and Average Life. The model will continue to repeat the 2000 simulations until the rate is within $5*10^-3$ tolerance of the yield curve.  
 
 # Appendix  
 
@@ -851,6 +899,15 @@ def doWaterfall(loans, tranches):
 
 ```
 ## Appendix B  
+  
+Fannie Mae Tables  
+
+## Appendix C  
+  
+Waterfall cashflow excel model from quantitative process.  
+
+## Appendix D  
+  
 
 # References
 Practical Law. (n.d.). Retrieved November 25, 2020, from https://ca.practicallaw.thomsonreuters.com/3-502-8950?transitionType=Default 
