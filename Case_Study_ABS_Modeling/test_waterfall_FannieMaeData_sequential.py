@@ -39,8 +39,8 @@ def main():
     ###############################################
     loans1500 = LoanPool(loansImportCSV('MA4176_31418DUA8_COLLAT_ISSUANCE.csv'))
     tranches = StructuredSecurities(loans1500.totalPrincipal())
-    tranches.addTranche('StandardTranche', '0.7', '0.02500', '1')
-    tranches.addTranche('StandardTranche', '0.3', '0.03125', '2')
+    tranches.addTranche('StandardTranche', '0.8', '0.05500', '1')
+    tranches.addTranche('StandardTranche', '0.2', '0.08125', '2')
     tranches.setMode('Sequential')
 
     ledger, tranchesMetrics = simulateWaterfall(loans1500, tranches, 1)
